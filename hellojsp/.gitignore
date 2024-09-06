@@ -1,0 +1,32 @@
+# Compiled class file
+*.class
+
+# Log files
+logs/*
+*.log
+
+# IDE-specific files
+.metadata
+.project
+.settings
+.classpath
+.idea
+
+# Local configuration file (example)
+local.properties
+
+# Test directories
+/test
+/tests
+
+# Automatically generated files
+target/
+build/
+
+# Dependency directories
+/lib
+/node_modules
+
+# Temporary files
+*.tmp
+*.swp
