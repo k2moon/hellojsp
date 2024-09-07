@@ -8,6 +8,13 @@ public class MemberDTO {
 	
 	public MemberDTO() {
 	}	
+	
+	public MemberDTO(String id, String pass, String name) {
+		super();
+		this.id = id;
+		this.pass = pass;
+		this.name = name;
+	}
 
 	public MemberDTO(String id, String pass, String name, String regidate) {
 		super();
