@@ -10,7 +10,6 @@ request.setCharacterEncoding("UTF-8");
 String id = request.getParameter("id");
 String pass = request.getParameter("pass");
 String name = request.getParameter("name");
-out.print(id +","+pass+","+name);
 %>
 
 <%
@@ -22,11 +21,11 @@ JDBConnect jdbc = new JDBConnect();
 conn = jdbc.con;
 
 // 쿼리문 생성   
-String sql = "update member set pass = ?, name = ? where id = ?";  
+String sql = "insert into member(id, pass, name) values(?, ?, ?)";  
 PreparedStatement pstmt = conn.prepareStatement(sql);  
-pstmt.setString(1, pass);
-pstmt.setString(2, name);
-pstmt.setString(3, id);
+pstmt.setString(1, id);
+pstmt.setString(2, pass);
+pstmt.setString(3, name);
 
 // 쿼리 수행
 int rs = pstmt.executeUpdate();
@@ -37,6 +36,6 @@ jdbc.close();
 
 <%
 //작업 후 페이지 이동
-response.sendRedirect("View.jsp?id="+id);
+response.sendRedirect("List.jsp");
 %>
     

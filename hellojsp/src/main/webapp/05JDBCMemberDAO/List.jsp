@@ -1,41 +1,15 @@
-<%@page import="java.util.ArrayList"%>
 <%@page import="model1.member.dto.MemberDTO"%>
 <%@page import="java.util.List"%>
-<%@page import="common.JDBConnect"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="java.sql.DriverManager"%>
+<%@page import="model1.member.dao.MemberDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-// DB에 연결
-Connection conn;
-JDBConnect jdbc = new JDBConnect();
-conn = jdbc.con;
-
-// 쿼리문 생성   
-String sql = "SELECT id, pass, name, regidate FROM member";  
-Statement stmt = conn.createStatement();  
-
-// 쿼리 수행
-ResultSet rs = stmt.executeQuery(sql);  
-
 // 결과 확인(웹 페이지에 출력)
-List<MemberDTO> members = new ArrayList<>();
-while (rs.next()) { 
-    String id = rs.getString("id");
-    String pw = rs.getString("pass");
-    String name = rs.getString("name");
-    String regidate = rs.getString("regidate");
-    
-    //out.println(String.format("%s %s %s %s", id, pw, name, regidate) + "<br/>");
-    MemberDTO member = new MemberDTO(id,pw,name,regidate);
-    members.add(member);    
-}
+MemberDAO dao = new MemberDAO(application);
+List<MemberDTO> members = dao.selectList();
 
 // 연결 닫기
-jdbc.close();
+dao.close();
 %>   
 
 <%
