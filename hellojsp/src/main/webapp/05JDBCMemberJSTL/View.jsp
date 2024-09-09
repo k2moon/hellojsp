@@ -36,26 +36,26 @@ dao.close();
         <tr>
             <td width="10%">ID</td>
             <td align="center">
-                <%=member.getId() %>
+                ${member.id}
             </td>
         </tr>
         <tr>
             <td width="10%">PASS</td>
             <td align="center">
-                <%=member.getPass() %>
+                ${member.pass}
             </td>
         </tr>
         <tr>
             <td width="10%">NAME</td>
             <td align="center">
-                <%=member.getName() %>
+                ${member.name}
             </td>
         </tr>        
         <tr>
             <td colspan="2" align="center">
                <a href="./List.jsp">[List]</a>
-               <a href="./Edit.jsp?id=<%=member.getId()%>">[Edit]</a>
-               <a href="./DeleteProcess.jsp?id=<%=member.getId()%>">[Delete]</a>               
+               <a href="./Edit.jsp?id=${member.id}">[Edit]</a>
+               <a href="./DeleteProcess.jsp?id=${member.id}">[Delete]</a>               
             </td>
         </tr>
     </table>

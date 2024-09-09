@@ -3,6 +3,7 @@
 <%@page import="model1.member.dao.MemberDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <%
 // 결과 확인(웹 페이지에 출력)
 MemberDAO dao = new MemberDAO(application);
@@ -33,14 +34,15 @@ dao.close();
 		<th width="25%">NAME</th>
 		<th width="25%">REGIDATE</th>
 	</tr>
-<%for(MemberDTO member: members) {%>	
+<%//for(MemberDTO member: members) {%>
+<c:forEach items="${members}" var="member">	
 	<tr align="center">
-		<td><a href="View.jsp?id=<%=member.getId()%>"><%=member.getId() %></a></td>
-		<td><%=member.getPass() %></td>
-		<td><%=member.getName() %></td>
-		<td><%=member.getRegidate() %>
-	</td>				 	
-<%} %>
+		<td><a href="View.jsp?id=$">${member.id}</a></td>
+		<td>${member.pass}</td>
+		<td>${member.name}</td>
+		<td>${member.regidate}</td>	
+</c:forEach>				 	
+<%//} %>
 <tr><td colspan="4" align="center"><a href="./Write.jsp">회원 가입</a></td></tr>
 </table>
 
