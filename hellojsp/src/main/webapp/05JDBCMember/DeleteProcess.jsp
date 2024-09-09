@@ -15,17 +15,15 @@ out.print(id);
 // DB에 저장
 
 // DB에 연결
-Connection conn;
 JDBConnect jdbc = new JDBConnect();
-conn = jdbc.con;
 
 // 쿼리문 생성   
 String sql = "delete member where id = ?";  
-PreparedStatement pstmt = conn.prepareStatement(sql);  
-pstmt.setString(1, id);
+jdbc.psmt = jdbc.con.prepareStatement(sql);  
+jdbc.psmt.setString(1, id);
 
 // 쿼리 수행
-int rs = pstmt.executeUpdate();
+int rs = jdbc.psmt.executeUpdate();
 
 // DB 종료
 jdbc.close();

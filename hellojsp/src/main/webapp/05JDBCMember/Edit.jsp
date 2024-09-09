@@ -15,24 +15,22 @@ String id = request.getParameter("id");
 // DB에 저장
 
 // DB에 연결
-Connection conn;
 JDBConnect jdbc = new JDBConnect();
-conn = jdbc.con;
 
 // 쿼리문 생성   
 String sql = "SELECT id, pass, name, regidate FROM member where id = ?";  
-PreparedStatement pstmt = conn.prepareStatement(sql);  
-pstmt.setString(1, id);
+jdbc.psmt = jdbc.con.prepareStatement(sql);  
+jdbc.psmt.setString(1, id);
 
 //쿼리 수행
-ResultSet rs = pstmt.executeQuery(); 
+jdbc.rs = jdbc.psmt.executeQuery(); 
 
 //결과 확인 및 저장(웹 페이지에 출력)
 MemberDTO member = null;
-if (rs.next()) { 
- String pw = rs.getString("pass");
- String name = rs.getString("name");
- String regidate = rs.getString("regidate");
+if (jdbc.rs.next()) { 
+ String pw = jdbc.rs.getString("pass");
+ String name = jdbc.rs.getString("name");
+ String regidate = jdbc.rs.getString("regidate");
  
  //out.println(String.format("%s %s %s %s", id, pw, name, regidate) + "<br/>");
  member = new MemberDTO(id,pw,name,regidate);     

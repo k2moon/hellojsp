@@ -10,24 +10,22 @@
     pageEncoding="UTF-8"%>
 <%
 // DB에 연결
-Connection conn;
 JDBConnect jdbc = new JDBConnect();
-conn = jdbc.con;
 
 // 쿼리문 생성   
 String sql = "SELECT id, pass, name, regidate FROM member";  
-Statement stmt = conn.createStatement();  
+jdbc.stmt = jdbc.con.createStatement();  
 
 // 쿼리 수행
-ResultSet rs = stmt.executeQuery(sql);  
+jdbc.rs = jdbc.stmt.executeQuery(sql);  
 
 // 결과 확인(웹 페이지에 출력)
 List<MemberDTO> members = new ArrayList<>();
-while (rs.next()) { 
-    String id = rs.getString("id");
-    String pw = rs.getString("pass");
-    String name = rs.getString("name");
-    String regidate = rs.getString("regidate");
+while (jdbc.rs.next()) { 
+    String id = jdbc.rs.getString("id");
+    String pw = jdbc.rs.getString("pass");
+    String name = jdbc.rs.getString("name");
+    String regidate = jdbc.rs.getString("regidate");
     
     //out.println(String.format("%s %s %s %s", id, pw, name, regidate) + "<br/>");
     MemberDTO member = new MemberDTO(id,pw,name,regidate);
