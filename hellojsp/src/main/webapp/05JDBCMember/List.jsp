@@ -47,7 +47,7 @@ jdbc.close();
 </head>
 <body>
 <!-- Menu  -->
-<jsp:include page="../common/Menu.jsp" />
+<jsp:include page="/common/Menu.jsp" />
 <!-- Contents -->
 <h1>List</h1>
 <table border="1" width="80%">

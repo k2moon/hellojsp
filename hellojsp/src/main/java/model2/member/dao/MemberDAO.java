@@ -1,17 +1,15 @@
-package model1.member.dao;
+package model2.member.dao;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
+import common.DBConnPool;
+import model2.member.dto.MemberDTO;
 
-import common.JDBConnect;
-import model1.member.dto.MemberDTO;
-
-public class MemberDAO extends JDBConnect{
+public class MemberDAO extends DBConnPool{
 	
-	public MemberDAO(ServletContext application) {
-		super(application);
+	public MemberDAO() {
+		super();
 	}
 	
 	public List<MemberDTO> selectList() { // 게시물 목록
