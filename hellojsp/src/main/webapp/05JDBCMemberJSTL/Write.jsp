@@ -8,10 +8,10 @@
 </head>
 <body>
 <!-- Menu  -->
-<jsp:include page="../common/Menu.jsp" />
+<jsp:include page="/common/Menu.jsp" />
 <!-- Contents -->
 <h1>Write</h1>
-<form name="writeFrm" method="post" action="WriteProcess.jsp">
+<form name="writeFrm" method="post" action="WriteProcess.do">
     <table border="1" width="80%">
         <tr>
             <td>ID</td>

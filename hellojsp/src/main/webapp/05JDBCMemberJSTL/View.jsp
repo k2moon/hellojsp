@@ -1,30 +1,28 @@
-<%@page import="model1.member.dao.MemberDAO"%>
-<%@page import="model1.member.dto.MemberDTO"%>
+<%@page import="model2.member.dto.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%
-//값 받기
-request.setCharacterEncoding("UTF-8");
-String id = request.getParameter("id");
-%>
-
-<%
-
 //결과 확인 및 저장(웹 페이지에 출력)
-MemberDAO dao = new MemberDAO(application);
-MemberDTO member = dao.selectView(id);
-
-dao.close();
+//MemberDTO member = (MemberDTO)request.getAttribute("member");
 %>
-
-<%
-//작업 후 페이지 이동
-%>    
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>View.jsp</title>
+<script>
+	function delete_confirm(member_id) {
+		const rs = confirm("삭제하시겠습니까?");
+		console.log(rs);
+		if(rs){
+			location.href="DeleteProcess.do?id="+member_id;
+		}else{
+			alert('삭제가 취소 되었습니다.');
+		}
+		
+	}
+</script>
 </head>
 <body>
 <!-- Menu  -->
@@ -36,26 +34,33 @@ dao.close();
         <tr>
             <td width="10%">ID</td>
             <td align="center">
-                ${member.id}
+                ${member.id }
             </td>
         </tr>
         <tr>
             <td width="10%">PASS</td>
             <td align="center">
-                ${member.pass}
+                ${member.pass }
             </td>
         </tr>
         <tr>
             <td width="10%">NAME</td>
             <td align="center">
-                ${member.name}
+                ${member.name }
+            </td>
+        </tr> 
+        <tr>
+            <td width="10%">REGIDATE</td>
+            <td align="center">
+                ${member.regidate }
             </td>
         </tr>        
         <tr>
             <td colspan="2" align="center">
-               <a href="./List.jsp">[List]</a>
-               <a href="./Edit.jsp?id=${member.id}">[Edit]</a>
-               <a href="./DeleteProcess.jsp?id=${member.id}">[Delete]</a>               
+               <a href="./List.do">[List]</a>
+               <a href="./Edit.do?id=${member.id }">[Edit]</a>
+               <!-- a href="./DeleteProcess.do?id=${member.id }">[Delete]</a -->
+               <a href="#" onclick="delete_confirm('${member.id }')">[Delete]</a>               
             </td>
         </tr>
     </table>
