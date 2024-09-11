@@ -1,15 +1,17 @@
 package model2.member.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.JspWriter;
 
 import com.google.gson.Gson;
 
@@ -58,8 +60,74 @@ public class MemberAPIController extends HttpServlet {
 	    	writer.print(membersJson);
 	    	
 	    }else if(action.equals("/WriteProcess.json")){
-	    	String id = request.getParameter("data");
-	    	System.out.println(id);
+	    	
+	    	// json 문자열 처리
+	    	BufferedReader reader = request.getReader();
+	        String memberJson = reader.readLine();
+	        
+	        MemberDTO dto = gson.fromJson(memberJson, MemberDTO.class);
+	    	System.out.println(dto);
+	        
+	    	int rs = service.insertWrite(dto);
+	    	//int rs = 1;
+	    	
+	    	Map<String, String> rsMap = new HashMap<String, String>();
+	    	rsMap.put("rs", rs+"");
+	    	String rsJson = gson.toJson(rsMap);	
+	    	
+	    	System.out.println(rsJson);
+	    	
+	    	PrintWriter writer = response.getWriter();
+	    	writer.print(rsJson);
+	    	
+	    }else if(action.equals("/View.json")) {
+	    	String id = request.getParameter("id");
+	    	MemberDTO member = service.selectView(id);
+	    	
+	    	String memberJson = gson.toJson(member);	    	
+	    	
+	    	System.out.println(memberJson);
+	    	
+	    	PrintWriter writer = response.getWriter();
+	    	writer.print(memberJson);
+	    	
+	    }else if(action.equals("/EditProcess.json")){
+	    	
+	    	// json 문자열 처리
+	    	BufferedReader reader = request.getReader();
+	        String memberJson = reader.readLine();
+	        
+	        MemberDTO dto = gson.fromJson(memberJson, MemberDTO.class);
+	    	System.out.println(dto);
+	        
+	    	int rs = service.updateEdit(dto);
+	    	//int rs = 1;
+	    	
+	    	Map<String, String> rsMap = new HashMap<String, String>();
+	    	rsMap.put("rs", rs+"");
+	    	rsMap.put("id", dto.getId());
+	    	String rsJson = gson.toJson(rsMap);	
+	    	
+	    	System.out.println(rsJson);
+	    	
+	    	PrintWriter writer = response.getWriter();
+	    	writer.print(rsJson);
+	    	
+	    }else if(action.equals("/DeleteProcess.json")){
+	    	
+	    	String id = request.getParameter("id");
+	    	
+	    	int rs = service.delete(id);
+	    	//int rs = 1;
+	    	
+	    	Map<String, String> rsMap = new HashMap<String, String>();
+	    	rsMap.put("rs", rs+"");
+	    	String rsJson = gson.toJson(rsMap);	
+	    	
+	    	System.out.println(rsJson);
+	    	
+	    	PrintWriter writer = response.getWriter();
+	    	writer.print(rsJson);
 	    	
 	    }
 	}
