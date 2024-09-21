@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MemberAJAX</title>
+<script type="text/javascript">
+
+// items
+let items = {};
+function setItems(data){
+	items = data;
+}
+
+// List
+function List(){
+	
+	let page = '';
+	page = `
+		<h1>List - AJAX </h1>
+		<table border="1" width="80%">
+		<tr>
+			<th width="25%">ID</th>
+			<th width="25%">PASS</th>
+			<th width="25%">NAME</th>
+			<th width="25%">REGIDATE</th>
+		</tr>
+	`;
+	for(item of items){
+		page += `
+			<tr align="center">
+			<td><a href="#" onclick="selectView('${item.id}')">${item.id}</a></td>
+			<td>${item.pass}</td>
+			<td>${item.name}</td>
+			<td>${item.regidate}</td>
+		</tr>		
+	    `;
+	}
+	console.log(page)
+    page += `
+    	<tr><td colspan="4"><a href="#" onclick="Write();">[회원 가입]</a></td></tr>
+    	</table>
+    	`;
+    document.querySelector('#root').innerHTML = page;
+}
+
+function selectList(){
+	fetch('/hellojsp/List.json')
+	  .then(response => response.json())
+	  .then(data => {
+	    // Handle the data here
+	    console.log(data);
+	    setItems(data);
+	    List();
+	  })
+	  .catch(error => {
+	    // Handle errors here
+	    console.error('Error:',error);
+	 });
+}
+
+//Write
+function Write(){
+	let page = '';
+	page = `
+		<h1>Write  - AJAX </h1>
+		<form name="writeFrm" method="post" action="WriteProcess.do">
+		    <table border="1" width="80%">
+		        <tr>
+		            <td>ID</td>
+		            <td>
+		                <input type="text" name="id" style="width: 90%;" />
+		            </td>
+		        </tr>
+		        <tr>
+		            <td>PASS</td>
+		            <td>
+		                <input type="text" name="pass" style="width: 90%;" />
+		            </td>
+		        </tr>
+		        <tr>
+		            <td>NAME</td>
+		            <td>
+		                <input type="text" name="name" style="width: 90%;" />
+		            </td>
+		        </tr>        
+		        <tr>
+		            <td colspan="2" align="center">
+		                <button type="button" onclick="insertWrite()">작성 완료</button>
+		                <button type="button" onclick="List()">List</button>
+		            </td>
+		        </tr>
+		    </table>
+		</form>
+
+		`;
+	document.querySelector('#root').innerHTML = page;
+}
+function insertWrite(){
+	const form = document.writeFrm;
+	const id = form.id.value;
+	const pass = form.pass.value;
+	const name = form.name.value;
+	const params = {id, pass, name};
+	console.log(params);
+	
+	fetch('/hellojsp/WriteProcess.json', {
+	  method: 'POST',
+	  headers: {
+	    'Content-Type': 'application/json'
+	  },
+	  body: JSON.stringify(params)
+	})
+	.then(response => response.json())
+	.then(data => {
+	  console.log('Success:', data);
+	  if(data['rs'] === '1'){
+		  selectList();
+	  }else{
+		  alert('잠시 후 다시 해주세요!!');
+	  }
+	})
+	.catch(error => {
+	  console.error('Error:', error);
+	});
+}
+
+// View
+function View(){
+	let page = '';
+	page = `
+		<h1>View - AJAX</h1>
+		<table border="1" width="80%">
+		    <tr>
+		        <td width="10%">ID</td>
+		        <td align="center">${items.id }</td>
+		    </tr>
+		    <tr>
+		        <td width="10%">PASS</td>
+		        <td align="center">${items.pass }</td>
+		    </tr>
+		    <tr>
+		        <td width="10%">NAME</td>
+		        <td align="center">${items.name }</td>
+		    </tr> 
+		    <tr>
+		        <td width="10%">REGIDATE</td>
+		        <td align="center">${items.regidate }</td>
+		    </tr>        
+		    <tr>
+		        <td colspan="2" align="center">
+		           <a href="#" onclick="selectList()">[List]</a>
+		           <a href="#" onclick="viewEdit('${items.id }')">[Edit]</a>
+		           <a href="#" onclick="delete_confirm('${items.id }')">[Delete]</a>               
+		        </td>
+		    </tr>
+		</table>
+		`;
+	document.querySelector('#root').innerHTML = page;
+}
+
+function selectView(id){
+	console.log(id);
+	fetch('/hellojsp/View.json?id='+id)
+	  .then(response => response.json())
+	  .then(data => {
+	    // Handle the data here
+	    console.log(data);
+	    setItems(data);
+	    View();
+	  })
+	  .catch(error => {
+	    // Handle errors here
+	    console.error('Error:',error);
+ });
+}
+
+// Edit
+function Edit(){
+	let page = '';
+	page = `
+		<h1>Edit - AJAX</h1>
+		<form name="editFrm">
+		<input type="hidden" name="id" value="${items.id }">
+		    <table border="1" width="80%">
+		        <tr>
+		            <td>ID</td>
+		            <td>
+		                ${items.id }
+		            </td>
+		        </tr>
+		        <tr>
+		            <td>PASS</td>
+		            <td>
+		                <input type="text" name="pass" style="width: 90%;" value="${items.pass }" />
+		            </td>
+		        </tr>
+		        <tr>
+		            <td>NAME</td>
+		            <td>
+		                <input type="text" name="name" style="width: 90%;" value="${items.name }" />
+		            </td>
+		        </tr>        
+		        <tr>
+		            <td colspan="2" align="center">
+		                <button type="button" onclick="updateEdit();">작성 완료</button>
+		                <button type="reset">다시 입력</button>                
+		            </td>
+		        </tr>
+		    </table>
+		</form>
+		`;
+	document.querySelector('#root').innerHTML = page;
+}
+function viewEdit(id){
+	console.log(id);
+	fetch('/hellojsp/View.json?id='+id)
+	  .then(response => response.json())
+	  .then(data => {
+	    // Handle the data here
+	    console.log(data);
+	    setItems(data);
+	    Edit();
+	  })
+	  .catch(error => {
+	    // Handle errors here
+	    console.error('Error:',error);
+ });
+}
+
+function updateEdit(){
+	const form = document.editFrm;
+	const id = form.id.value;
+	const pass = form.pass.value;
+	const name = form.name.value;
+	const params = {id, pass, name};
+	console.log(params);
+	
+	fetch('/hellojsp/EditProcess.json', {
+	  method: 'POST',
+	  headers: {
+	    'Content-Type': 'application/json'
+	  },
+	  body: JSON.stringify(params)
+	})
+	.then(response => response.json())
+	.then(data => {
+	  console.log('Success:', data);
+	  if(data['rs'] === '1'){		  
+		  selectView(data['id']);
+	  }else{
+		  alert('잠시 후 다시 해주세요!!');
+	  }
+	})
+	.catch(error => {
+	  console.error('Error:', error);
+	});
+}
+
+// Delete
+function delete_confirm(id) {
+	const rs = confirm("삭제하시겠습니까?");
+	console.log(rs);
+	if(rs){
+		deleteProcess(id)
+	}else{
+		alert('삭제가 취소 되었습니다.');
+	}
+	
+}
+function deleteProcess(id){
+	console.log(id);
+	fetch('/hellojsp/DeleteProcess.json?id='+id)
+	  .then(response => response.json())
+	  .then(data => {
+	    // Handle the data here
+	    console.log(data);
+	    if(data['rs'] === '1'){
+	    	selectList();	
+	    }else{
+	    	alert('잠시 후 다시 해주세요!!');
+	    }
+	    
+	  })
+	  .catch(error => {
+	    // Handle errors here
+	    console.error('Error:',error);
+ });
+}
+
+// Onload
+window.onload = function(){
+	selectList();
+	
+}
+</script>
+</head>
+<body>
+<div id="root"></div>
+</body>
+</html>

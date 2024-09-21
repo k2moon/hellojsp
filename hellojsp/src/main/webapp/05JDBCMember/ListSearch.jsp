@@ -8,16 +8,30 @@
 <%@page import="java.sql.DriverManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<%
+// 검색 처리
+String searchWord = request.getParameter("searchWord");
+%>
+
 <%
 // DB에 연결
 JDBConnect jdbc = new JDBConnect();
 
 // 쿼리문 생성   
-String sql = "SELECT id, pass, name, regidate FROM member";  
-jdbc.stmt = jdbc.con.createStatement();  
+String sql = "select id, pass, name, regidate from member ";
+if(searchWord != null){
+	sql += " where id like concat('%',?,'%') or name like concat('%', ? '%')";	
+}
 
+jdbc.psmt = jdbc.con.prepareStatement(sql);
+
+if(searchWord != null){
+	jdbc.psmt.setString(1, searchWord);
+	jdbc.psmt.setString(2, searchWord);
+}
 // 쿼리 수행
-jdbc.rs = jdbc.stmt.executeQuery(sql);  
+jdbc.rs = jdbc.psmt.executeQuery();  
 
 // 결과 확인(웹 페이지에 출력)
 List<MemberDTO> members = new ArrayList<>();
@@ -50,6 +64,17 @@ jdbc.close();
 <jsp:include page="/common/Menu.jsp" />
 <!-- Contents -->
 <h1>List</h1>
+<form>
+<table border="1" width="80%">
+	<tr>
+		<td colspan="4" align="center">
+			<input type="text" name="searchWord">
+			<input type="submit" value="검색">
+			
+		</td>
+	<tr>
+</table>
+</form>	
 <table border="1" width="80%">
 	<tr>
 		<th width="25%">ID</th>

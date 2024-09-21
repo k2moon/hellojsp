@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import model1.member.dao.MemberDAO;
 import model1.member.dto.MemberDTO;
 
-@WebServlet("/EditProcess")
+@WebServlet("/DeleteProcess")
 public class DeleteProcess extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     ServletContext application;
